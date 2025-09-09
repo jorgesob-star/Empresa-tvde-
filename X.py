@@ -1,5 +1,5 @@
-import streamlit as st import pandas as pd
-
+import streamlit as st
+import pandas as pd
 st.set_page_config(page_title="Simulador TVDE", layout="wide")
 
 st.title("Simulador financeiro para empresa TVDE — Streamlit") st.markdown( "Use esta app para simular faturação, despesas e encargos (Seg. Social, IRC) e ver o lucro mensal e anual.\n" "Os valores por defeito correspondem aos exemplos que discutimos: faturação 3.000€ ou 4.000€." )
