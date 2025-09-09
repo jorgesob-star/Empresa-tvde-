@@ -2,7 +2,7 @@ import streamlit as st import pandas as pd
 
 st.set_page_config(page_title="Simulador TVDE", layout="wide")
 
-st.title("Simulador financeiro para empresa TVDE — Streamlit") st.markdown( "Use esta app para simular faturação, despesas e encargos (Seg. Social, IRC) e ver o lucro mensal e anual.\n" "Os valores por defeito correspondem aos exemplos que discutimos: faturação 3.000€ ou 4.000€." )
+st.title("Simulador financeiro para empresa TVDE — Streamlit") st.markdown( "Use esta app para simular faturação, despesas e encargos (Seg. Social, IRC) e ver o lucro mensal e anual.\n" "Valores padrão: faturação 4.000€, combustível 1.000€, seguro 180€" )
 
 with st.sidebar: st.header("Parâmetros") faturacao = st.number_input("Faturação bruta mensal (€)", min_value=0.0, value=4000.0, step=100.0, format="%.2f") comissao_pct = st.slider("Comissão plataforma (%)", min_value=0.0, max_value=60.0, value=25.0, step=1.0) combustivel = st.number_input("Combustível mensal (€)", min_value=0.0, value=1000.0, step=10.0, format="%.2f") manutencao = st.number_input("Manutenção mensal (€)", min_value=0.0, value=75.0, step=5.0, format="%.2f") seguro = st.number_input("Seguro mensal (€)", min_value=0.0, value=180.0, step=5.0, format="%.2f") outros = st.number_input("Outros custos operacionais (€)", min_value=0.0, value=0.0, step=5.0, format="%.2f")
 
@@ -17,7 +17,7 @@ Cálculos
 
 comissao = faturacao * (comissao_pct / 100.0) custos_operacionais = combustivel + manutencao + seguro + outros lucro_bruto = faturacao - comissao - custos_operacionais
 
-Evita valores negativos para encargos
+Evitar negativos
 
 seg_social = max(lucro_bruto * (seg_social_pct / 100.0), 0.0) irc = max(lucro_bruto * (irc_pct / 100.0), 0.0) lucro_liquido = lucro_bruto - seg_social - irc
 
@@ -43,9 +43,7 @@ Exportação CSV
 
 st.subheader("Exportar resultados") result_df = pd.concat([df_mensal.set_index('Descrição'), df_anual.set_index('Descrição')], axis=1) result_df.columns = ["Mensal (€)", "Anual (€)"]
 
-csv = result_df.to_csv(sep=';')
-
-st.download_button(label="Descarregar CSV", data=csv, file_name="simulacao_tvde.csv", mime="text/csv")
+csv = result_df.to_csv(sep=';') st.download_button(label="Descarregar CSV", data=csv, file_name="simulacao_tvde.csv", mime="text/csv")
 
 st.markdown("---") st.caption("Simulação simplificada: não substitui aconselhamento contabilístico. Ajuste taxas e custos conforme necessário.")
 
